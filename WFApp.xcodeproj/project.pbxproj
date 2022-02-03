@@ -7,23 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6EEA860339A9C92F990CE448 /* Pods_WFApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E621FEE1AD19CC18671D6D92 /* Pods_WFApp.framework */; };
 		E366DCAB27ABF98C00F46018 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E366DCAA27ABF98C00F46018 /* AppDelegate.swift */; };
 		E366DCAD27ABF98C00F46018 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E366DCAC27ABF98C00F46018 /* SceneDelegate.swift */; };
 		E366DCAF27ABF98C00F46018 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E366DCAE27ABF98C00F46018 /* ViewController.swift */; };
-		E366DCB227ABF98C00F46018 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E366DCB027ABF98C00F46018 /* Main.storyboard */; };
 		E366DCB427ABF99100F46018 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E366DCB327ABF99100F46018 /* Assets.xcassets */; };
 		E366DCB727ABF99100F46018 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E366DCB527ABF99100F46018 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		732BA36B4DCD1D4F6FF50AE7 /* Pods-WFApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WFApp.debug.xcconfig"; path = "Target Support Files/Pods-WFApp/Pods-WFApp.debug.xcconfig"; sourceTree = "<group>"; };
+		C94680D12A30F90AA08E062F /* Pods-WFApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WFApp.release.xcconfig"; path = "Target Support Files/Pods-WFApp/Pods-WFApp.release.xcconfig"; sourceTree = "<group>"; };
 		E366DCA727ABF98C00F46018 /* WFApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WFApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E366DCAA27ABF98C00F46018 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E366DCAC27ABF98C00F46018 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E366DCAE27ABF98C00F46018 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		E366DCB127ABF98C00F46018 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E366DCB327ABF99100F46018 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E366DCB627ABF99100F46018 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E366DCB827ABF99100F46018 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E621FEE1AD19CC18671D6D92 /* Pods_WFApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WFApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,17 +33,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6EEA860339A9C92F990CE448 /* Pods_WFApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		39131DB925275C0BFCE2D37B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E621FEE1AD19CC18671D6D92 /* Pods_WFApp.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CDEC902381C7F141F2E99460 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				732BA36B4DCD1D4F6FF50AE7 /* Pods-WFApp.debug.xcconfig */,
+				C94680D12A30F90AA08E062F /* Pods-WFApp.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		E366DC9E27ABF98C00F46018 = {
 			isa = PBXGroup;
 			children = (
 				E366DCA927ABF98C00F46018 /* WFApp */,
 				E366DCA827ABF98C00F46018 /* Products */,
+				CDEC902381C7F141F2E99460 /* Pods */,
+				39131DB925275C0BFCE2D37B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -59,7 +81,6 @@
 				E366DCAA27ABF98C00F46018 /* AppDelegate.swift */,
 				E366DCAC27ABF98C00F46018 /* SceneDelegate.swift */,
 				E366DCAE27ABF98C00F46018 /* ViewController.swift */,
-				E366DCB027ABF98C00F46018 /* Main.storyboard */,
 				E366DCB327ABF99100F46018 /* Assets.xcassets */,
 				E366DCB527ABF99100F46018 /* LaunchScreen.storyboard */,
 				E366DCB827ABF99100F46018 /* Info.plist */,
@@ -74,9 +95,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E366DCBB27ABF99100F46018 /* Build configuration list for PBXNativeTarget "WFApp" */;
 			buildPhases = (
+				F45706E70E5F12B88DAD4CC4 /* [CP] Check Pods Manifest.lock */,
 				E366DCA327ABF98C00F46018 /* Sources */,
 				E366DCA427ABF98C00F46018 /* Frameworks */,
 				E366DCA527ABF98C00F46018 /* Resources */,
+				5BA05DD5ACE9152E365F4895 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -127,11 +150,52 @@
 			files = (
 				E366DCB727ABF99100F46018 /* LaunchScreen.storyboard in Resources */,
 				E366DCB427ABF99100F46018 /* Assets.xcassets in Resources */,
-				E366DCB227ABF98C00F46018 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5BA05DD5ACE9152E365F4895 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WFApp/Pods-WFApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WFApp/Pods-WFApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WFApp/Pods-WFApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F45706E70E5F12B88DAD4CC4 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-WFApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E366DCA327ABF98C00F46018 /* Sources */ = {
@@ -147,14 +211,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		E366DCB027ABF98C00F46018 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				E366DCB127ABF98C00F46018 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		E366DCB527ABF99100F46018 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -217,7 +273,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -272,7 +328,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -284,6 +340,7 @@
 		};
 		E366DCBC27ABF99100F46018 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 732BA36B4DCD1D4F6FF50AE7 /* Pods-WFApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -294,9 +351,7 @@
 				INFOPLIST_FILE = WFApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -306,12 +361,13 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		E366DCBD27ABF99100F46018 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C94680D12A30F90AA08E062F /* Pods-WFApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -322,9 +378,7 @@
 				INFOPLIST_FILE = WFApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -334,7 +388,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
