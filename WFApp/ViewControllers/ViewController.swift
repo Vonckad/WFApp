@@ -144,4 +144,11 @@ extension ViewController: UICollectionViewDelegate {
         // This will cancel all unfinished downloading task when the cell disappearing.
         (cell as! PhotoCollectionViewCell).imageView.kf.cancelDownloadTask()
     }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        let cell = collectionView.cellForItem(at: indexPath) as! PhotoCollectionViewCell
+        let photo = photoModel.results[indexPath.row]
+        let detailVC = DetailViewController(imageUrl: photo.urls.regular ?? "", mainTitle: "")
+//        navigationController?.pushViewController(detailVC, animated: true)
+        present(detailVC, animated: true)
+    }
 }

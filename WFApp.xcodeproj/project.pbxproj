@@ -16,6 +16,7 @@
 		E3ECCEE027AD1BA500C3D29E /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ECCEDF27AD1BA500C3D29E /* PhotoCollectionViewCell.swift */; };
 		E3ECCEE327AD1E6F00C3D29E /* PhotoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ECCEE227AD1E6F00C3D29E /* PhotoModel.swift */; };
 		E3ECCEE727AD1EC700C3D29E /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ECCEE627AD1EC700C3D29E /* Service.swift */; };
+		E3ECCEE927AD85F200C3D29E /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ECCEE827AD85F200C3D29E /* DetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		E3ECCEDF27AD1BA500C3D29E /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		E3ECCEE227AD1E6F00C3D29E /* PhotoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoModel.swift; sourceTree = "<group>"; };
 		E3ECCEE627AD1EC700C3D29E /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		E3ECCEE827AD85F200C3D29E /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		E621FEE1AD19CC18671D6D92 /* Pods_WFApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WFApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -100,6 +102,7 @@
 			isa = PBXGroup;
 			children = (
 				E366DCAE27ABF98C00F46018 /* ViewController.swift */,
+				E3ECCEE827AD85F200C3D29E /* DetailViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -257,6 +260,7 @@
 				E3ECCEE327AD1E6F00C3D29E /* PhotoModel.swift in Sources */,
 				E366DCAD27ABF98C00F46018 /* SceneDelegate.swift in Sources */,
 				E3ECCEE727AD1EC700C3D29E /* Service.swift in Sources */,
+				E3ECCEE927AD85F200C3D29E /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
