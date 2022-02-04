@@ -13,6 +13,7 @@
 		E366DCAF27ABF98C00F46018 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E366DCAE27ABF98C00F46018 /* ViewController.swift */; };
 		E366DCB427ABF99100F46018 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E366DCB327ABF99100F46018 /* Assets.xcassets */; };
 		E366DCB727ABF99100F46018 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E366DCB527ABF99100F46018 /* LaunchScreen.storyboard */; };
+		E3ECCEE027AD1BA500C3D29E /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ECCEDF27AD1BA500C3D29E /* PhotoCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 		E366DCB327ABF99100F46018 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E366DCB627ABF99100F46018 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E366DCB827ABF99100F46018 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E3ECCEDF27AD1BA500C3D29E /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		E621FEE1AD19CC18671D6D92 /* Pods_WFApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WFApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -80,12 +82,29 @@
 			children = (
 				E366DCAA27ABF98C00F46018 /* AppDelegate.swift */,
 				E366DCAC27ABF98C00F46018 /* SceneDelegate.swift */,
-				E366DCAE27ABF98C00F46018 /* ViewController.swift */,
+				E3ECCEDE27AD1B7100C3D29E /* Cells */,
+				E3ECCEDD27AD1B6200C3D29E /* ViewControllers */,
 				E366DCB327ABF99100F46018 /* Assets.xcassets */,
 				E366DCB527ABF99100F46018 /* LaunchScreen.storyboard */,
 				E366DCB827ABF99100F46018 /* Info.plist */,
 			);
 			path = WFApp;
+			sourceTree = "<group>";
+		};
+		E3ECCEDD27AD1B6200C3D29E /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				E366DCAE27ABF98C00F46018 /* ViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		E3ECCEDE27AD1B7100C3D29E /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				E3ECCEDF27AD1BA500C3D29E /* PhotoCollectionViewCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -203,6 +222,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E366DCAF27ABF98C00F46018 /* ViewController.swift in Sources */,
+				E3ECCEE027AD1BA500C3D29E /* PhotoCollectionViewCell.swift in Sources */,
 				E366DCAB27ABF98C00F46018 /* AppDelegate.swift in Sources */,
 				E366DCAD27ABF98C00F46018 /* SceneDelegate.swift in Sources */,
 			);
