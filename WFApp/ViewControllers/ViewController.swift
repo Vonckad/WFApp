@@ -20,15 +20,14 @@ class ViewController: UIViewController {
     }
 
     private var dataSource: UICollectionViewDiffableDataSource<Section, ResultsPhoto>! = nil
-//    private var currentSnapshot: NSDiffableDataSourceSnapshot<Section, ResultsPhoto>! = nil
 
     private var loader: ServiceProtocol = Service()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tabBarItem.image = UIImage(systemName: "car")
-        view.backgroundColor = backgroundColor
+//        view.backgroundColor = backgroundColor
+        view.addSubview(GradientView(frame: view.bounds))
         configureUI()
         configureDataSource()
         
@@ -61,6 +60,7 @@ extension ViewController {
         collectionView.backgroundColor = .clear
         collectionView.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCollectionViewCell.reuseIdentifier)
         collectionView.delegate = self
+        collectionView.showsVerticalScrollIndicator = false
         view.addSubview(collectionView)
         
         NSLayoutConstraint.activate([
@@ -105,6 +105,8 @@ extension ViewController {
             cell.imageView.kf.indicatorType = .activity
             guard let urlImage = URL(string: model.urls.regular ?? "") else { return cell }
             cell.imageView.kf.setImage(with: urlImage, options: [.cacheMemoryOnly])
+            cell.layer.borderWidth = 2
+            cell.layer.borderColor = UIColor.white.cgColor
             return cell
         })
         
@@ -142,7 +144,7 @@ extension ViewController: UISearchBarDelegate {
 extension ViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         // This will cancel all unfinished downloading task when the cell disappearing.
-        (cell as! PhotoCollectionViewCell).imageView.kf.cancelDownloadTask()
+//        (cell as! PhotoCollectionViewCell).imageView.kf.cancelDownloadTask()
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //        let cell = collectionView.cellForItem(at: indexPath) as! PhotoCollectionViewCell

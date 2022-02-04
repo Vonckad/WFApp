@@ -16,7 +16,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
         let tabbar = UITabBarController()
-        tabbar.viewControllers = [ViewController()]
+        tabbar.tabBar.tintColor = .white
+        tabbar.tabBar.backgroundColor = UIColor(white: 0, alpha: 0.1)
+        let firstVC = ViewController()
+        firstVC.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "home"), selectedImage: UIImage(named: "home-2"))
+        let secondVC = LikedViewController()
+        secondVC.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "bookmark"), selectedImage: UIImage(named: "bookmark-2"))
+        tabbar.viewControllers = [firstVC, secondVC]
         window?.rootViewController = tabbar
         window?.makeKeyAndVisible()
     }

@@ -17,6 +17,8 @@
 		E3ECCEE327AD1E6F00C3D29E /* PhotoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ECCEE227AD1E6F00C3D29E /* PhotoModel.swift */; };
 		E3ECCEE727AD1EC700C3D29E /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ECCEE627AD1EC700C3D29E /* Service.swift */; };
 		E3ECCEE927AD85F200C3D29E /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ECCEE827AD85F200C3D29E /* DetailViewController.swift */; };
+		E3ECCEEB27AD910300C3D29E /* LikedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ECCEEA27AD910200C3D29E /* LikedViewController.swift */; };
+		E3ECCEEF27AD97A700C3D29E /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ECCEEE27AD97A700C3D29E /* GradientView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +35,8 @@
 		E3ECCEE227AD1E6F00C3D29E /* PhotoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoModel.swift; sourceTree = "<group>"; };
 		E3ECCEE627AD1EC700C3D29E /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		E3ECCEE827AD85F200C3D29E /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		E3ECCEEA27AD910200C3D29E /* LikedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedViewController.swift; sourceTree = "<group>"; };
+		E3ECCEEE27AD97A700C3D29E /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		E621FEE1AD19CC18671D6D92 /* Pods_WFApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WFApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -89,7 +93,7 @@
 				E3ECCEE427AD1E8B00C3D29E /* System */,
 				E3ECCEE527AD1E9800C3D29E /* Services */,
 				E3ECCEE127AD1DFB00C3D29E /* Models */,
-				E3ECCEDE27AD1B7100C3D29E /* Cells */,
+				E3ECCEEC27AD975E00C3D29E /* Views */,
 				E3ECCEDD27AD1B6200C3D29E /* ViewControllers */,
 				E366DCB327ABF99100F46018 /* Assets.xcassets */,
 				E366DCB527ABF99100F46018 /* LaunchScreen.storyboard */,
@@ -102,6 +106,7 @@
 			isa = PBXGroup;
 			children = (
 				E366DCAE27ABF98C00F46018 /* ViewController.swift */,
+				E3ECCEEA27AD910200C3D29E /* LikedViewController.swift */,
 				E3ECCEE827AD85F200C3D29E /* DetailViewController.swift */,
 			);
 			path = ViewControllers;
@@ -138,6 +143,15 @@
 				E3ECCEE627AD1EC700C3D29E /* Service.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		E3ECCEEC27AD975E00C3D29E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E3ECCEDE27AD1B7100C3D29E /* Cells */,
+				E3ECCEEE27AD97A700C3D29E /* GradientView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -258,9 +272,11 @@
 				E3ECCEE027AD1BA500C3D29E /* PhotoCollectionViewCell.swift in Sources */,
 				E366DCAB27ABF98C00F46018 /* AppDelegate.swift in Sources */,
 				E3ECCEE327AD1E6F00C3D29E /* PhotoModel.swift in Sources */,
+				E3ECCEEB27AD910300C3D29E /* LikedViewController.swift in Sources */,
 				E366DCAD27ABF98C00F46018 /* SceneDelegate.swift in Sources */,
 				E3ECCEE727AD1EC700C3D29E /* Service.swift in Sources */,
 				E3ECCEE927AD85F200C3D29E /* DetailViewController.swift in Sources */,
+				E3ECCEEF27AD97A700C3D29E /* GradientView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
