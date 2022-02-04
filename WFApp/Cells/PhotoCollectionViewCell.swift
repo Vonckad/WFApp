@@ -23,6 +23,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
 extension PhotoCollectionViewCell {
     func configure() {
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
         contentView.addSubview(imageView)
         NSLayoutConstraint.activate([
             imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),

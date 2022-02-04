@@ -6,19 +6,23 @@
 //
 
 import UIKit
+import Kingfisher
 
 class ViewController: UIViewController {
     
     private var searchTextField: UISearchBar!
     private var collectionView: UICollectionView!
-//    private var photos:
+    private var photoModel: PhotoModel = PhotoModel(results: [])
     private var backgroundColor = UIColor(red: 193/255, green: 174/255, blue: 244/255, alpha: 1)
     
     enum Section {
         case main
     }
 
-    private var dataSource: UICollectionViewDiffableDataSource<Section, Int>! = nil
+    private var dataSource: UICollectionViewDiffableDataSource<Section, ResultsPhoto>! = nil
+//    private var currentSnapshot: NSDiffableDataSourceSnapshot<Section, ResultsPhoto>! = nil
+
+    private var loader: ServiceProtocol = Service()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +31,18 @@ class ViewController: UIViewController {
         view.backgroundColor = backgroundColor
         configureUI()
         configureDataSource()
+        
+        loader.getRandomPhoto() { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let model):
+                    self.photoModel.results = model
+                    self.reloadData()
+                case .failure(let error):
+                    print("Erorr loader = \(error)")
+                }
+            }
+        }
     }
 }
 
@@ -44,6 +60,7 @@ extension ViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .clear
         collectionView.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCollectionViewCell.reuseIdentifier)
+        collectionView.delegate = self
         view.addSubview(collectionView)
         
         NSLayoutConstraint.activate([
@@ -81,18 +98,23 @@ extension ViewController {
     }
     
     func configureDataSource() {
-        dataSource = UICollectionViewDiffableDataSource<Section, Int>(collectionView: collectionView) {
-            (collectionView: UICollectionView, indexPath: IndexPath, identifier: Int) -> UICollectionViewCell? in
+    
+        dataSource = UICollectionViewDiffableDataSource<Section, ResultsPhoto>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, model) -> UICollectionViewCell? in
             
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.reuseIdentifier, for: indexPath) as! PhotoCollectionViewCell
-            cell.backgroundColor = .green
+            cell.imageView.kf.indicatorType = .activity
+            guard let urlImage = URL(string: model.urls.regular ?? "") else { return cell }
+            cell.imageView.kf.setImage(with: urlImage, options: [.cacheMemoryOnly])
             return cell
-        }
-
+        })
         
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Int>()
+    }
+    
+    func reloadData() {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, ResultsPhoto>()
+        
         snapshot.appendSections([.main])
-        snapshot.appendItems(Array(0..<94))
+        snapshot.appendItems(photoModel.results)
         dataSource.apply(snapshot, animatingDifferences: false)
     }
 }
@@ -100,6 +122,26 @@ extension ViewController {
 //MARK: - UISearchBarDelegate
 extension ViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        becomeFirstResponder()
+        searchBar.searchTextField.resignFirstResponder()
+        
+        loader.getPhoto(guery: searchBar.text!) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let model):
+                    self.photoModel = model
+                    self.reloadData()
+                case .failure(let error):
+                    print("Erorr loader = \(error)")
+                }
+            }
+        }
+    }
+}
+
+//MARK: - UICollectionViewDelegate
+extension ViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        // This will cancel all unfinished downloading task when the cell disappearing.
+        (cell as! PhotoCollectionViewCell).imageView.kf.cancelDownloadTask()
     }
 }
