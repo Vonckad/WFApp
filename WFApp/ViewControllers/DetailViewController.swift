@@ -8,17 +8,20 @@
 import UIKit
 import Kingfisher
 
-class DetailViewController: UIViewController {
+protocol DetailViewControllerDelegate {
+    func addPhoto(_ photo: ResultsPhoto)
+}
 
-    var imageUrl: String
-    var mainTitle: String
-    
+class DetailViewController: UIViewController {
+        
+    var photo: ResultsPhoto
+    var delegate: DetailViewControllerDelegate?
     var imageView: UIImageView!
     var titleLabel: UILabel!
+    var likePhotoButton: UIButton!
     
-    init(imageUrl: String, mainTitle: String) {
-        self.imageUrl = imageUrl
-        self.mainTitle = mainTitle
+    init(photo: ResultsPhoto) {
+        self.photo = photo
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -36,18 +39,37 @@ class DetailViewController: UIViewController {
         imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
-        guard let url = URL(string: imageUrl) else { return }
+        view.addSubview(imageView)
+        
+        likePhotoButton = UIButton()
+        likePhotoButton.translatesAutoresizingMaskIntoConstraints = false
+        likePhotoButton.setTitle("Like", for: .normal)
+        likePhotoButton.backgroundColor = .green
+        likePhotoButton.addTarget(self, action: #selector(likePhoto), for: .touchUpInside)
+        view.addSubview(likePhotoButton)
+        
+        guard let url = URL(string: photo.urls.regular ?? "") else { return }
         imageView.kf.indicatorType = .activity
         KF.url(url)
             .fade(duration: 1)
             .set(to: imageView)
-        view.addSubview(imageView)
         
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             imageView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16),
             imageView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16),
-            imageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
+//            imageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            
+            likePhotoButton.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 44),
+            likePhotoButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 24),
+            likePhotoButton.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -24),
+            likePhotoButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
+    }
+    
+    @objc func likePhoto() {
+        delegate?.addPhoto(photo)
+        likePhotoButton.setTitle("UnLike", for: .normal)
+        likePhotoButton.backgroundColor = .red
     }
 }

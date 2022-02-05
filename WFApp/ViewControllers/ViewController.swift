@@ -13,7 +13,8 @@ class ViewController: UIViewController {
     private var searchTextField: UISearchBar!
     private var collectionView: UICollectionView!
     private var photoModel: PhotoModel = PhotoModel(results: [])
-    private var backgroundColor = UIColor(red: 193/255, green: 174/255, blue: 244/255, alpha: 1)
+    var gradientView: GradientView!
+//    private var backgroundColor = UIColor(red: 193/255, green: 174/255, blue: 244/255, alpha: 1)
     
     enum Section {
         case main
@@ -26,8 +27,9 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        view.backgroundColor = backgroundColor
-        view.addSubview(GradientView(frame: view.bounds))
+        gradientView = GradientView(frame: view.bounds)
+        self.view.insertSubview(gradientView, at: 0)
+
         configureUI()
         configureDataSource()
         
@@ -43,7 +45,14 @@ class ViewController: UIViewController {
             }
         }
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        gradientView.animateGradient()
+    }
 }
+
+
 
 //MARK: - configureUI
 extension ViewController {
@@ -149,7 +158,8 @@ extension ViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //        let cell = collectionView.cellForItem(at: indexPath) as! PhotoCollectionViewCell
         let photo = photoModel.results[indexPath.row]
-        let detailVC = DetailViewController(imageUrl: photo.urls.regular ?? "", mainTitle: "")
+        let detailVC = DetailViewController(photo: photo)
+        detailVC.delegate = tabBarController?.viewControllers?.last as? LikedViewController
 //        navigationController?.pushViewController(detailVC, animated: true)
         present(detailVC, animated: true)
     }

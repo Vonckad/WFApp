@@ -19,6 +19,7 @@
 		E3ECCEE927AD85F200C3D29E /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ECCEE827AD85F200C3D29E /* DetailViewController.swift */; };
 		E3ECCEEB27AD910300C3D29E /* LikedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ECCEEA27AD910200C3D29E /* LikedViewController.swift */; };
 		E3ECCEEF27AD97A700C3D29E /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ECCEEE27AD97A700C3D29E /* GradientView.swift */; };
+		E3ECCEF127AE92E900C3D29E /* LikedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ECCEF027AE92E700C3D29E /* LikedTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		E3ECCEE827AD85F200C3D29E /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		E3ECCEEA27AD910200C3D29E /* LikedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedViewController.swift; sourceTree = "<group>"; };
 		E3ECCEEE27AD97A700C3D29E /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
+		E3ECCEF027AE92E700C3D29E /* LikedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedTableViewCell.swift; sourceTree = "<group>"; };
 		E621FEE1AD19CC18671D6D92 /* Pods_WFApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WFApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -116,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				E3ECCEDF27AD1BA500C3D29E /* PhotoCollectionViewCell.swift */,
+				E3ECCEF027AE92E700C3D29E /* LikedTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -269,6 +272,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E366DCAF27ABF98C00F46018 /* ViewController.swift in Sources */,
+				E3ECCEF127AE92E900C3D29E /* LikedTableViewCell.swift in Sources */,
 				E3ECCEE027AD1BA500C3D29E /* PhotoCollectionViewCell.swift in Sources */,
 				E366DCAB27ABF98C00F46018 /* AppDelegate.swift in Sources */,
 				E3ECCEE327AD1E6F00C3D29E /* PhotoModel.swift in Sources */,

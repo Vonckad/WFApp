@@ -23,10 +23,17 @@ struct ResultsPhoto: Decodable, Hashable {
 //    var description: String?
 //    var alt_description: String?
     var urls: UrlsPhoto
+    var user: User
 }
 
 struct UrlsPhoto: Decodable, Hashable {
     var raw: String?
     var full: String?
     var regular: String?
+}
+
+struct User: Decodable, Hashable {
+    let name: String?
+    let location: String?
+    let total_collections: Int?
 }

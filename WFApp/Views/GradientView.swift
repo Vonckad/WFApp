@@ -13,9 +13,9 @@ class GradientView: UIView {
     var gradientSet = [[CGColor]]()
     var currentGradient: Int = 0
     
-    let gradientOne = UIColor(red: 193/255, green: 174/255, blue: 244/255, alpha: 1).cgColor
-    let gradientTwo = UIColor(red: 244/255, green: 88/255, blue: 53/255, alpha: 1).cgColor
-    let gradientThree = UIColor(red: 196/255, green: 70/255, blue: 107/255, alpha: 1).cgColor
+    let gradientOne = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1).cgColor//UIColor(red: 193/255, green: 174/255, blue: 244/255, alpha: 1).cgColor
+    let gradientTwo = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1).cgColor//UIColor(red: 244/255, green: 88/255, blue: 53/255, alpha: 1).cgColor
+    let gradientThree = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1).cgColor// UIColor(red: 196/255, green: 70/255, blue: 107/255, alpha: 1).cgColor
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -26,12 +26,10 @@ class GradientView: UIView {
         
         gradient.frame = self.bounds
         gradient.colors = gradientSet[currentGradient]
-        gradient.startPoint = CGPoint(x:0, y:0)
-        gradient.endPoint = CGPoint(x:1, y:1)
+        gradient.startPoint = CGPoint(x:0.5, y:0)
+        gradient.endPoint = CGPoint(x:0.5, y:1)
         gradient.drawsAsynchronously = true
         self.layer.addSublayer(gradient)
-        
-        animateGradient()
     }
     
     required init?(coder: NSCoder) {
