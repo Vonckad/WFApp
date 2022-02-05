@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     private var searchTextField: UISearchBar!
     private var collectionView: UICollectionView!
     private var photoModel: PhotoModel = PhotoModel(results: [])
+    var likedVC: LikedViewController!
     var gradientView: GradientView!
 //    private var backgroundColor = UIColor(red: 193/255, green: 174/255, blue: 244/255, alpha: 1)
     
@@ -29,7 +30,9 @@ class ViewController: UIViewController {
         
         gradientView = GradientView(frame: view.bounds)
         self.view.insertSubview(gradientView, at: 0)
-
+        
+        likedVC = tabBarController?.viewControllers?.last as? LikedViewController
+        
         configureUI()
         configureDataSource()
         
@@ -48,6 +51,7 @@ class ViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        navigationController?.isNavigationBarHidden = true
         gradientView.animateGradient()
     }
 }
@@ -70,6 +74,7 @@ extension ViewController {
         collectionView.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCollectionViewCell.reuseIdentifier)
         collectionView.delegate = self
         collectionView.showsVerticalScrollIndicator = false
+        collectionView.keyboardDismissMode = .onDrag
         view.addSubview(collectionView)
         
         NSLayoutConstraint.activate([
@@ -107,18 +112,18 @@ extension ViewController {
     }
     
     func configureDataSource() {
-    
+        
         dataSource = UICollectionViewDiffableDataSource<Section, ResultsPhoto>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, model) -> UICollectionViewCell? in
             
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.reuseIdentifier, for: indexPath) as! PhotoCollectionViewCell
             cell.imageView.kf.indicatorType = .activity
             guard let urlImage = URL(string: model.urls.regular ?? "") else { return cell }
             cell.imageView.kf.setImage(with: urlImage, options: [.cacheMemoryOnly])
-            cell.layer.borderWidth = 2
-            cell.layer.borderColor = UIColor.white.cgColor
+//            cell.layer.borderWidth = 2
+//            cell.layer.borderColor = UIColor.white.cgColor
+//            cell.layer.cornerRadius =
             return cell
         })
-        
     }
     
     func reloadData() {
@@ -156,11 +161,14 @@ extension ViewController: UICollectionViewDelegate {
 //        (cell as! PhotoCollectionViewCell).imageView.kf.cancelDownloadTask()
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let cell = collectionView.cellForItem(at: indexPath) as! PhotoCollectionViewCell
         let photo = photoModel.results[indexPath.row]
         let detailVC = DetailViewController(photo: photo)
-        detailVC.delegate = tabBarController?.viewControllers?.last as? LikedViewController
-//        navigationController?.pushViewController(detailVC, animated: true)
+        for pt in likedVC.likedPhoto {
+            if photo.id == pt.id {
+                detailVC.isLiked = true
+            }
+        }
+        detailVC.delegate = likedVC//tabBarController?.viewControllers?.last as? LikedViewController
         present(detailVC, animated: true)
     }
 }

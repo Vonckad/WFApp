@@ -10,6 +10,7 @@ import Kingfisher
 
 protocol DetailViewControllerDelegate {
     func addPhoto(_ photo: ResultsPhoto)
+    func removePhoto(_ photo: ResultsPhoto)
 }
 
 class DetailViewController: UIViewController {
@@ -19,6 +20,9 @@ class DetailViewController: UIViewController {
     var imageView: UIImageView!
     var titleLabel: UILabel!
     var likePhotoButton: UIButton!
+    var dismissButton: UIButton!
+    
+    var isLiked = false
     
     init(photo: ResultsPhoto) {
         self.photo = photo
@@ -31,8 +35,14 @@ class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .gray
+        navigationController?.isNavigationBarHidden = false
         configure()
+        if isLiked {
+            likePhotoButton.setTitle("UnLike", for: .normal)
+            likePhotoButton.backgroundColor = .red
+        }
+//        print("viewDidLoad \(photo.id)")
     }
     
     private func configure() {
@@ -48,28 +58,55 @@ class DetailViewController: UIViewController {
         likePhotoButton.addTarget(self, action: #selector(likePhoto), for: .touchUpInside)
         view.addSubview(likePhotoButton)
         
+        dismissButton = UIButton()
+        dismissButton.translatesAutoresizingMaskIntoConstraints = false
+        dismissButton.setTitle("close", for: .normal)
+//        dismissButton.backgroundColor = .green
+        dismissButton.addTarget(self, action: #selector(dismissDetailVC), for: .touchUpInside)
+        view.addSubview(dismissButton)
+        
+        NSLayoutConstraint.activate([
+            dismissButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
+            dismissButton.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8),
+//            dismissButton.widthAnchor.constraint(equalToConstant: 50),
+            dismissButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            imageView.topAnchor.constraint(equalTo: dismissButton.topAnchor, constant: 8),
+            imageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
+            imageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16),
+            imageView.heightAnchor.constraint(equalToConstant: 400),
+            
+//            likePhotoButton.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20),
+            likePhotoButton.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
+            likePhotoButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor),
+            likePhotoButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
+        ])
+        loadImage()
+    }
+    
+    private func loadImage() {
         guard let url = URL(string: photo.urls.regular ?? "") else { return }
         imageView.kf.indicatorType = .activity
         KF.url(url)
             .fade(duration: 1)
             .set(to: imageView)
-        
-        NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            imageView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16),
-            imageView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16),
-//            imageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
-            
-            likePhotoButton.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 44),
-            likePhotoButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 24),
-            likePhotoButton.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -24),
-            likePhotoButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-        ])
     }
     
     @objc func likePhoto() {
-        delegate?.addPhoto(photo)
-        likePhotoButton.setTitle("UnLike", for: .normal)
-        likePhotoButton.backgroundColor = .red
+        if isLiked {
+            isLiked = false
+            delegate?.removePhoto(photo)
+            likePhotoButton.setTitle("Like", for: .normal)
+            likePhotoButton.backgroundColor = .green
+        } else {
+            isLiked = true
+            delegate?.addPhoto(photo)
+            likePhotoButton.setTitle("UnLike", for: .normal)
+            likePhotoButton.backgroundColor = .red
+        }
+    }
+    
+    @objc func dismissDetailVC() {
+        dismiss(animated: true)
     }
 }

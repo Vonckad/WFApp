@@ -29,9 +29,11 @@ class LikedViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(LikedTableViewCell.self, forCellReuseIdentifier: LikedTableViewCell.reuseIdentifier)
-        tableView.backgroundColor = .white
+        tableView.backgroundColor = .clear
         view.addSubview(tableView)
-        
+        tabBarController?.tabBar.backgroundColor = UIColor(white: 0, alpha: 0.1)
+        tableView.clipsToBounds = true
+        tabBarController?.tabBar.backgroundImage = UIImage()
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
             tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8),
@@ -51,12 +53,27 @@ extension LikedViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: LikedTableViewCell.reuseIdentifier, for: indexPath) as! LikedTableViewCell
         let photo = likedPhoto[indexPath.row]
         cell.configureCell(with: photo.urls.regular ?? "", and: photo.user.name ?? "")
-        
+        cell.backgroundColor = .clear
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
+    }
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == .delete) {
+            likedPhoto = likedPhoto.filter({$0 != likedPhoto[indexPath.row]})
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let detailVC = DetailViewController(photo: likedPhoto[indexPath.row])
+        detailVC.isLiked = true
+        detailVC.delegate = self
+        present(detailVC, animated: true)
     }
 }
 
@@ -64,7 +81,13 @@ extension LikedViewController: UITableViewDelegate, UITableViewDataSource {
 extension LikedViewController: DetailViewControllerDelegate {
     func addPhoto(_ photo: ResultsPhoto) {
         likedPhoto.append(photo)
-//        print("likedPhoto.append \(photo.id)")
-//        tableView.reloadData()
+    }
+    func removePhoto(_ photo: ResultsPhoto) {
+        likedPhoto = likedPhoto.filter({$0 != photo})
+        if tableView != nil {
+            tableView.reloadData()
+        }
     }
 }
+
+
