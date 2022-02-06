@@ -16,6 +16,7 @@ class ViewController: UIViewController {
     var likedVC: LikedViewController!
     var gradientView: GradientView!
     var topView: UIView!
+    var actView: UIActivityIndicatorView!
     
     enum Section {
         case main
@@ -88,6 +89,10 @@ extension ViewController {
             collectionView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8)
         ])
+        
+        actView = UIActivityIndicatorView(frame: CGRect(x: view.center.x, y: view.center.y, width: 20, height: 20))
+        actView.startAnimating()
+        view.addSubview(actView)
     }
 }
 
@@ -119,7 +124,6 @@ extension ViewController {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.reuseIdentifier, for: indexPath) as! PhotoCollectionViewCell
             cell.imageView.kf.indicatorType = .activity
             guard let urlImage = URL(string: model.urls.regular ?? "") else { return cell }
-//            cell.imageView.kf.setImage(with: urlImage, options: [.cacheMemoryOnly])
             KF.url(urlImage)
                 .fade(duration: 1)
                 .set(to: cell.imageView)
@@ -133,6 +137,8 @@ extension ViewController {
         snapshot.appendSections([.main])
         snapshot.appendItems(photoModel.results)
         dataSource.apply(snapshot, animatingDifferences: false)
+        self.actView.stopAnimating()
+        self.actView.isHidden = true
     }
 }
 
