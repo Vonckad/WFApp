@@ -18,7 +18,12 @@ class DetailViewController: UIViewController {
     var photo: ResultsPhoto
     var delegate: DetailViewControllerDelegate?
     var imageView: UIImageView!
-    var titleLabel: UILabel!
+    var userLabel: UILabel!
+    
+    var dateLabel: UILabel!
+    var locationLabel: UILabel!
+    var countLabel: UILabel!
+    
     var likePhotoButton: UIButton!
     var dismissButton: UIButton!
     
@@ -39,11 +44,31 @@ class DetailViewController: UIViewController {
         navigationController?.isNavigationBarHidden = false
         configure()
         if isLiked {
-            likePhotoButton.setTitle("UnLike", for: .normal)
+            likePhotoButton.setTitle("Unlike", for: .normal)
             likePhotoButton.backgroundColor = .red
         }
+
+        userLabel.attributedText = setupText(bolt: "Имя автора: ", normal: photo.user.name ?? "")
+        dateLabel.attributedText = setupText(bolt: "Дата создания: ",
+                                             normal: Date.getFormattedDate(photo.created_at ?? ""))
+        locationLabel.attributedText = setupText(bolt: "Местоположение: ", normal: photo.location.title ?? "")
+        countLabel.attributedText = setupText(bolt: "Количество скачиваний: ", normal: "\(photo.downloads)")
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        likePhotoButton.layer.cornerRadius = likePhotoButton.frame.height / 2
+    }
+    
+    private func setupText(bolt: String, normal: String) -> NSMutableAttributedString {
         
-        titleLabel.text = "\(photo.description)\n\(photo.alt_description)\n\(photo.user.name)\n\(photo.user.location)"
+        let attributsBold = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 16, weight: .bold)]
+        let attributsNormal = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 16, weight: .regular)]
+        let attributedString = NSMutableAttributedString(string: bolt, attributes: attributsBold)
+        let normalStringPart = NSMutableAttributedString(string: normal, attributes: attributsNormal)
+        attributedString.append(normalStringPart)
+        
+        return attributedString
     }
     
     private func configure() {
@@ -52,11 +77,25 @@ class DetailViewController: UIViewController {
         imageView.contentMode = .scaleAspectFit
         view.addSubview(imageView)
         
-        titleLabel = UILabel()
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.numberOfLines = 0
-        titleLabel.textAlignment = .left
-        view.addSubview(titleLabel)
+        userLabel = UILabel()
+        userLabel.translatesAutoresizingMaskIntoConstraints = false
+        userLabel.textAlignment = .left
+        view.addSubview(userLabel)
+        
+        dateLabel = UILabel()
+        dateLabel.translatesAutoresizingMaskIntoConstraints = false
+        dateLabel.textAlignment = .left
+        view.addSubview(dateLabel)
+        
+        locationLabel = UILabel()
+        locationLabel.translatesAutoresizingMaskIntoConstraints = false
+        locationLabel.textAlignment = .left
+        view.addSubview(locationLabel)
+        
+        countLabel = UILabel()
+        countLabel.translatesAutoresizingMaskIntoConstraints = false
+        countLabel.textAlignment = .left
+        view.addSubview(countLabel)
         
         likePhotoButton = UIButton()
         likePhotoButton.translatesAutoresizingMaskIntoConstraints = false
@@ -67,24 +106,35 @@ class DetailViewController: UIViewController {
         
         dismissButton = UIButton()
         dismissButton.translatesAutoresizingMaskIntoConstraints = false
-        dismissButton.setTitle("close", for: .normal)
+        dismissButton.setTitle("Закрыть", for: .normal)
         dismissButton.addTarget(self, action: #selector(dismissDetailVC), for: .touchUpInside)
         view.addSubview(dismissButton)
         
         NSLayoutConstraint.activate([
             dismissButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
-            dismissButton.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8),
+            dismissButton.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16),
             dismissButton.heightAnchor.constraint(equalToConstant: 50),
             
-            imageView.topAnchor.constraint(equalTo: dismissButton.topAnchor, constant: 8),
+            imageView.topAnchor.constraint(equalTo: dismissButton.bottomAnchor, constant: 8),
             imageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
             imageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16),
             imageView.heightAnchor.constraint(equalToConstant: 400),
             
-            titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
-            titleLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: imageView.trailingAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: likePhotoButton.topAnchor, constant: -8),
+            userLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
+            userLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
+            userLabel.trailingAnchor.constraint(equalTo: imageView.trailingAnchor),
+            
+            dateLabel.topAnchor.constraint(equalTo: userLabel.bottomAnchor, constant: 8),
+            dateLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
+            dateLabel.trailingAnchor.constraint(equalTo: imageView.trailingAnchor),
+            dateLabel.bottomAnchor.constraint(equalTo: locationLabel.topAnchor, constant: -8),
+            
+            locationLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
+            locationLabel.trailingAnchor.constraint(equalTo: imageView.trailingAnchor),
+            locationLabel.bottomAnchor.constraint(equalTo: countLabel.topAnchor, constant: -8),
+            
+            countLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
+            countLabel.trailingAnchor.constraint(equalTo: imageView.trailingAnchor),
             
             likePhotoButton.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
             likePhotoButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor),
@@ -117,5 +167,19 @@ class DetailViewController: UIViewController {
     
     @objc func dismissDetailVC() {
         dismiss(animated: true)
+    }
+}
+
+//MARK:- convert Date
+extension Date {
+    static func getFormattedDate(_ string: String) -> String{
+        let dateFormatterGet = DateFormatter()
+        dateFormatterGet.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+
+        let dateFormatterPrint = DateFormatter()
+        dateFormatterPrint.dateFormat = "dd MMM yyyy"
+
+        let date: Date? = dateFormatterGet.date(from: string)
+        return dateFormatterPrint.string(from: date!);
     }
 }
