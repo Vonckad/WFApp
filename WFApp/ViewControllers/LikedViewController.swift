@@ -15,6 +15,8 @@ class LikedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
+        tabBarController?.tabBar.backgroundColor = UIColor(white: 0, alpha: 0.1)
+        tabBarController?.tabBar.backgroundImage = UIImage()
         configure()
     }
     
@@ -31,9 +33,7 @@ class LikedViewController: UIViewController {
         tableView.register(LikedTableViewCell.self, forCellReuseIdentifier: LikedTableViewCell.reuseIdentifier)
         tableView.backgroundColor = .clear
         view.addSubview(tableView)
-        tabBarController?.tabBar.backgroundColor = UIColor(white: 0, alpha: 0.1)
-        tableView.clipsToBounds = true
-        tabBarController?.tabBar.backgroundImage = UIImage()
+        
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
             tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8),
@@ -70,6 +70,7 @@ extension LikedViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         let detailVC = DetailViewController(photo: likedPhoto[indexPath.row])
         detailVC.isLiked = true
         detailVC.delegate = self

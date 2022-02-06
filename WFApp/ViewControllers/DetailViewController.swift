@@ -90,6 +90,7 @@ class DetailViewController: UIViewController {
         locationLabel = UILabel()
         locationLabel.translatesAutoresizingMaskIntoConstraints = false
         locationLabel.textAlignment = .left
+        locationLabel.numberOfLines = 0
         view.addSubview(locationLabel)
         
         countLabel = UILabel()
