@@ -35,14 +35,15 @@ class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .gray
+        view.backgroundColor = #colorLiteral(red: 0.5970487542, green: 0.5506352338, blue: 0.9098039269, alpha: 1)
         navigationController?.isNavigationBarHidden = false
         configure()
         if isLiked {
             likePhotoButton.setTitle("UnLike", for: .normal)
             likePhotoButton.backgroundColor = .red
         }
-//        print("viewDidLoad \(photo.id)")
+        
+        titleLabel.text = "\(photo.description)\n\(photo.alt_description)\n\(photo.user.name)\n\(photo.user.location)"
     }
     
     private func configure() {
@@ -50,6 +51,12 @@ class DetailViewController: UIViewController {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
         view.addSubview(imageView)
+        
+        titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.numberOfLines = 0
+        titleLabel.textAlignment = .left
+        view.addSubview(titleLabel)
         
         likePhotoButton = UIButton()
         likePhotoButton.translatesAutoresizingMaskIntoConstraints = false
@@ -61,14 +68,12 @@ class DetailViewController: UIViewController {
         dismissButton = UIButton()
         dismissButton.translatesAutoresizingMaskIntoConstraints = false
         dismissButton.setTitle("close", for: .normal)
-//        dismissButton.backgroundColor = .green
         dismissButton.addTarget(self, action: #selector(dismissDetailVC), for: .touchUpInside)
         view.addSubview(dismissButton)
         
         NSLayoutConstraint.activate([
             dismissButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
             dismissButton.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8),
-//            dismissButton.widthAnchor.constraint(equalToConstant: 50),
             dismissButton.heightAnchor.constraint(equalToConstant: 50),
             
             imageView.topAnchor.constraint(equalTo: dismissButton.topAnchor, constant: 8),
@@ -76,7 +81,11 @@ class DetailViewController: UIViewController {
             imageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16),
             imageView.heightAnchor.constraint(equalToConstant: 400),
             
-//            likePhotoButton.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20),
+            titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
+            titleLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: imageView.trailingAnchor),
+            titleLabel.bottomAnchor.constraint(equalTo: likePhotoButton.topAnchor, constant: -8),
+            
             likePhotoButton.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
             likePhotoButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor),
             likePhotoButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),

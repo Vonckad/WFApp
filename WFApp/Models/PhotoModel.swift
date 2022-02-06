@@ -20,8 +20,8 @@ struct ResultsPhoto: Decodable, Hashable {
 //    var height: Int?
 //    var color: String?
 //    var blur_hash: String?
-//    var description: String?
-//    var alt_description: String?
+    var description: String?
+    var alt_description: String?
     var urls: UrlsPhoto
     var user: User
 }

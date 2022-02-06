@@ -15,7 +15,7 @@ class ViewController: UIViewController {
     private var photoModel: PhotoModel = PhotoModel(results: [])
     var likedVC: LikedViewController!
     var gradientView: GradientView!
-//    private var backgroundColor = UIColor(red: 193/255, green: 174/255, blue: 244/255, alpha: 1)
+    var topView: UIView!
     
     enum Section {
         case main
@@ -32,21 +32,10 @@ class ViewController: UIViewController {
         self.view.insertSubview(gradientView, at: 0)
         
         likedVC = tabBarController?.viewControllers?.last as? LikedViewController
-        
+    
         configureUI()
         configureDataSource()
-        
-        loader.getRandomPhoto() { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let model):
-                    self.photoModel.results = model
-                    self.reloadData()
-                case .failure(let error):
-                    print("Erorr loader = \(error)")
-                }
-            }
-        }
+        loadRandom()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -62,10 +51,17 @@ class ViewController: UIViewController {
 extension ViewController {
     private func configureUI() {
     
+        topView = UIView()
+        topView.translatesAutoresizingMaskIntoConstraints = false
+        topView.backgroundColor = UIColor(white: 0, alpha: 0.1)
+        view.addSubview(topView)
+        
         searchTextField = UISearchBar()
         searchTextField.translatesAutoresizingMaskIntoConstraints = false
         searchTextField.backgroundImage = UIImage()
         searchTextField.delegate = self
+        searchTextField.isOpaque = true
+        searchTextField.backgroundColor = UIColor(white: 0, alpha: 0.1)
         view.addSubview(searchTextField)
 
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
@@ -78,9 +74,14 @@ extension ViewController {
         view.addSubview(collectionView)
         
         NSLayoutConstraint.activate([
-            searchTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
-            searchTextField.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8),
-            searchTextField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8),
+            topView.topAnchor.constraint(equalTo: view.topAnchor),
+            topView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            topView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            topView.bottomAnchor.constraint(equalTo: searchTextField.topAnchor),
+            
+            searchTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            searchTextField.leftAnchor.constraint(equalTo: view.leftAnchor),
+            searchTextField.rightAnchor.constraint(equalTo: view.rightAnchor),
 
             collectionView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 8),
             collectionView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8),
@@ -92,41 +93,41 @@ extension ViewController {
 
 //MARK: - configureCollectionView
 extension ViewController {
-    func createLayout() -> UICollectionViewLayout {
+    private func createLayout() -> UICollectionViewLayout {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                             heightDimension: .fractionalHeight(1.0))
+                                              heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-
+        
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                              heightDimension: .absolute(250))
+                                               heightDimension: .absolute(250))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2)
         let spacing = CGFloat(10)
         group.interItemSpacing = .fixed(spacing)
-
+        
         let section = NSCollectionLayoutSection(group: group)
         section.interGroupSpacing = spacing
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
-
+        
         let layout = UICollectionViewCompositionalLayout(section: section)
         return layout
     }
     
-    func configureDataSource() {
+    private func configureDataSource() {
         
         dataSource = UICollectionViewDiffableDataSource<Section, ResultsPhoto>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, model) -> UICollectionViewCell? in
             
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.reuseIdentifier, for: indexPath) as! PhotoCollectionViewCell
             cell.imageView.kf.indicatorType = .activity
             guard let urlImage = URL(string: model.urls.regular ?? "") else { return cell }
-            cell.imageView.kf.setImage(with: urlImage, options: [.cacheMemoryOnly])
-//            cell.layer.borderWidth = 2
-//            cell.layer.borderColor = UIColor.white.cgColor
-//            cell.layer.cornerRadius =
+//            cell.imageView.kf.setImage(with: urlImage, options: [.cacheMemoryOnly])
+            KF.url(urlImage)
+                .fade(duration: 1)
+                .set(to: cell.imageView)
             return cell
         })
     }
     
-    func reloadData() {
+    private func reloadData() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, ResultsPhoto>()
         
         snapshot.appendSections([.main])
@@ -135,22 +136,55 @@ extension ViewController {
     }
 }
 
-//MARK: - UISearchBarDelegate
-extension ViewController: UISearchBarDelegate {
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.searchTextField.resignFirstResponder()
+//MARK: - createAlertView
+extension ViewController {
+    private func createAlertView(title: String, massage: String) {
+        let allert = UIAlertController.init(title: title, message: massage, preferredStyle: .alert)
+        let reloadAction = UIAlertAction(title: "Обновить", style: .default) { _ in
+            self.searchTextField.text == "" ? self.loadRandom() : self.loadSearchResult(query:  self.searchTextField.text!)
+        }
         
-        loader.getPhoto(guery: searchBar.text!) { result in
+        allert.addAction(reloadAction)
+        present(allert, animated: true, completion: nil)
+    }
+}
+
+//MARK: - loadData
+extension ViewController {
+    private func loadRandom() {
+        loader.getRandomPhoto() { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let model):
+                    self.photoModel.results = model
+                    self.reloadData()
+                case .failure(_):
+                    self.createAlertView(title: "Сбой загрузки!", massage: "Проверьте подключение к интернету")
+                }
+            }
+        }
+    }
+    
+    private func loadSearchResult(query: String) {
+        loader.getPhoto(query: query) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let model):
                     self.photoModel = model
                     self.reloadData()
-                case .failure(let error):
-                    print("Erorr loader = \(error)")
+                case .failure(_):
+                    self.createAlertView(title: "Сбой загрузки!", massage: "Проверьте подключение к интернету")
                 }
             }
         }
+    }
+}
+
+//MARK: - UISearchBarDelegate
+extension ViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.searchTextField.resignFirstResponder()
+        loadSearchResult(query: searchBar.text!)
     }
 }
 
