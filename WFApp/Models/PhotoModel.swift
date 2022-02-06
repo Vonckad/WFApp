@@ -16,8 +16,8 @@ struct ResultsPhoto: Decodable, Hashable {
     var created_at: String?
     var urls: UrlsPhoto
     var user: User
-    var location: LocationPhoto
-    var downloads: Int
+    var location: LocationPhoto?
+    var downloads: Int?
 }
 
 struct UrlsPhoto: Decodable, Hashable {

@@ -51,8 +51,8 @@ class DetailViewController: UIViewController {
         userLabel.attributedText = setupText(bolt: "Имя автора: ", normal: photo.user.name ?? "")
         dateLabel.attributedText = setupText(bolt: "Дата создания: ",
                                              normal: Date.getFormattedDate(photo.created_at ?? ""))
-        locationLabel.attributedText = setupText(bolt: "Местоположение: ", normal: photo.location.title ?? "")
-        countLabel.attributedText = setupText(bolt: "Количество скачиваний: ", normal: "\(photo.downloads)")
+        locationLabel.attributedText = setupText(bolt: "Местоположение: ", normal: photo.location?.title ?? "")
+        countLabel.attributedText = setupText(bolt: "Количество скачиваний: ", normal: "\(photo.downloads ?? 0)")
     }
     
     override func viewWillLayoutSubviews() {
