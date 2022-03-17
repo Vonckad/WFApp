@@ -13,6 +13,7 @@
 		E366DCAF27ABF98C00F46018 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E366DCAE27ABF98C00F46018 /* ViewController.swift */; };
 		E366DCB427ABF99100F46018 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E366DCB327ABF99100F46018 /* Assets.xcassets */; };
 		E366DCB727ABF99100F46018 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E366DCB527ABF99100F46018 /* LaunchScreen.storyboard */; };
+		E3D6157427E372310023402B /* ImageCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D6157327E372310023402B /* ImageCollectionView.swift */; };
 		E3ECCEE027AD1BA500C3D29E /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ECCEDF27AD1BA500C3D29E /* PhotoCollectionViewCell.swift */; };
 		E3ECCEE327AD1E6F00C3D29E /* PhotoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ECCEE227AD1E6F00C3D29E /* PhotoModel.swift */; };
 		E3ECCEE727AD1EC700C3D29E /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ECCEE627AD1EC700C3D29E /* Service.swift */; };
@@ -32,6 +33,7 @@
 		E366DCB327ABF99100F46018 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E366DCB627ABF99100F46018 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E366DCB827ABF99100F46018 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E3D6157327E372310023402B /* ImageCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionView.swift; sourceTree = "<group>"; };
 		E3ECCEDF27AD1BA500C3D29E /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		E3ECCEE227AD1E6F00C3D29E /* PhotoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoModel.swift; sourceTree = "<group>"; };
 		E3ECCEE627AD1EC700C3D29E /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 			children = (
 				E3ECCEDE27AD1B7100C3D29E /* Cells */,
 				E3ECCEEE27AD97A700C3D29E /* GradientView.swift */,
+				E3D6157327E372310023402B /* ImageCollectionView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				E3ECCEEB27AD910300C3D29E /* LikedViewController.swift in Sources */,
 				E366DCAD27ABF98C00F46018 /* SceneDelegate.swift in Sources */,
 				E3ECCEE727AD1EC700C3D29E /* Service.swift in Sources */,
+				E3D6157427E372310023402B /* ImageCollectionView.swift in Sources */,
 				E3ECCEE927AD85F200C3D29E /* DetailViewController.swift in Sources */,
 				E3ECCEEF27AD97A700C3D29E /* GradientView.swift in Sources */,
 			);

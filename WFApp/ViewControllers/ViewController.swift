@@ -6,24 +6,18 @@
 //
 
 import UIKit
-import Kingfisher
 
 class ViewController: UIViewController {
     
     private var searchTextField: UISearchBar!
-    private var collectionView: UICollectionView!
-    private var photoModel: PhotoModel = PhotoModel(results: [])
-    var likedVC: LikedViewController!
-    var gradientView: GradientView!
+    private var collectionView: ImageCollectionView!
     var topView: UIView!
-    var actView: UIActivityIndicatorView!
+//    var actView: UIActivityIndicatorView!
     
-    enum Section {
-        case main
-    }
-
-    private var dataSource: UICollectionViewDiffableDataSource<Section, ResultsPhoto>! = nil
-
+//    private var photoModel: PhotoModel = PhotoModel(results: [])
+    var likedVC: LikedViewController! // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    var gradientView: GradientView!
+    
     private var loader: ServiceProtocol = Service()
     
     override func viewDidLoad() {
@@ -31,11 +25,8 @@ class ViewController: UIViewController {
         
         gradientView = GradientView(frame: view.bounds)
         self.view.insertSubview(gradientView, at: 0)
-        
         likedVC = tabBarController?.viewControllers?.last as? LikedViewController
-    
         configureUI()
-        configureDataSource()
         loadRandom()
     }
     
@@ -45,8 +36,6 @@ class ViewController: UIViewController {
         gradientView.animateGradient()
     }
 }
-
-
 
 //MARK: - configureUI
 extension ViewController {
@@ -65,13 +54,9 @@ extension ViewController {
         searchTextField.backgroundColor = UIColor(white: 0, alpha: 0.1)
         view.addSubview(searchTextField)
 
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
+        collectionView = ImageCollectionView(frame: .zero, collectionViewLayout: ImageCollectionView.createLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .clear
-        collectionView.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCollectionViewCell.reuseIdentifier)
         collectionView.delegate = self
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.keyboardDismissMode = .onDrag
         view.addSubview(collectionView)
         
         NSLayoutConstraint.activate([
@@ -90,55 +75,9 @@ extension ViewController {
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8)
         ])
         
-        actView = UIActivityIndicatorView(frame: CGRect(x: view.center.x, y: view.center.y, width: 20, height: 20))
-        actView.startAnimating()
-        view.addSubview(actView)
-    }
-}
-
-//MARK: - configureCollectionView
-extension ViewController {
-    private func createLayout() -> UICollectionViewLayout {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                              heightDimension: .fractionalHeight(1.0))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                               heightDimension: .absolute(250))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2)
-        let spacing = CGFloat(10)
-        group.interItemSpacing = .fixed(spacing)
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = spacing
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
-        
-        let layout = UICollectionViewCompositionalLayout(section: section)
-        return layout
-    }
-    
-    private func configureDataSource() {
-        
-        dataSource = UICollectionViewDiffableDataSource<Section, ResultsPhoto>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, model) -> UICollectionViewCell? in
-            
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.reuseIdentifier, for: indexPath) as! PhotoCollectionViewCell
-            cell.imageView.kf.indicatorType = .activity
-            guard let urlImage = URL(string: model.urls.regular ?? "") else { return cell }
-            KF.url(urlImage)
-                .fade(duration: 1)
-                .set(to: cell.imageView)
-            return cell
-        })
-    }
-    
-    private func reloadData() {
-        var snapshot = NSDiffableDataSourceSnapshot<Section, ResultsPhoto>()
-        
-        snapshot.appendSections([.main])
-        snapshot.appendItems(photoModel.results)
-        dataSource.apply(snapshot, animatingDifferences: false)
-        self.actView.stopAnimating()
-        self.actView.isHidden = true
+//        actView = UIActivityIndicatorView(frame: CGRect(x: view.center.x, y: view.center.y, width: 20, height: 20))
+//        actView.startAnimating()
+//        view.addSubview(actView)
     }
 }
 
@@ -162,8 +101,9 @@ extension ViewController {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let model):
-                    self.photoModel.results = model
-                    self.reloadData()
+//                    self.photoModel.results = model
+                    self.collectionView.photoModel.results = model
+                    self.collectionView.myReloadData()
                 case .failure(_):
                     self.createAlertView(title: "Сбой загрузки!", massage: "Проверьте подключение к интернету")
                 }
@@ -176,8 +116,9 @@ extension ViewController {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let model):
-                    self.photoModel = model
-                    self.reloadData()
+//                    self.photoModel = model
+                    self.collectionView.photoModel = model
+                    self.collectionView.myReloadData()
                 case .failure(_):
                     self.createAlertView(title: "Сбой загрузки!", massage: "Проверьте подключение к интернету")
                 }
@@ -201,14 +142,14 @@ extension ViewController: UICollectionViewDelegate {
 //        (cell as! PhotoCollectionViewCell).imageView.kf.cancelDownloadTask()
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let photo = photoModel.results[indexPath.row]
+        let photo = self.collectionView.photoModel.results[indexPath.row]
         let detailVC = DetailViewController(photo: photo)
         for pt in likedVC.likedPhoto {
             if photo.id == pt.id {
                 detailVC.isLiked = true
             }
         }
-        detailVC.delegate = likedVC//tabBarController?.viewControllers?.last as? LikedViewController
+        detailVC.delegate = likedVC
         present(detailVC, animated: true)
     }
 }
