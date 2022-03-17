@@ -15,18 +15,18 @@ protocol DetailViewControllerDelegate {
 
 class DetailViewController: UIViewController {
         
-    var photo: ResultsPhoto
+    private var photo: ResultsPhoto
+    private var imageView: UIImageView!
+    private var userLabel: UILabel!
+    
+    private var dateLabel: UILabel!
+    private var locationLabel: UILabel!
+    private var countLabel: UILabel!
+    
+    private var likePhotoButton: UIButton!
+    private var dismissButton: UIButton!
+    
     var delegate: DetailViewControllerDelegate?
-    var imageView: UIImageView!
-    var userLabel: UILabel!
-    
-    var dateLabel: UILabel!
-    var locationLabel: UILabel!
-    var countLabel: UILabel!
-    
-    var likePhotoButton: UIButton!
-    var dismissButton: UIButton!
-    
     var isLiked = false
     
     init(photo: ResultsPhoto) {
@@ -111,35 +111,38 @@ class DetailViewController: UIViewController {
         dismissButton.addTarget(self, action: #selector(dismissDetailVC), for: .touchUpInside)
         view.addSubview(dismissButton)
         
+        let guide = view.safeAreaLayoutGuide
+        let spacing = CGFloat(16)
+        
         NSLayoutConstraint.activate([
-            dismissButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
-            dismissButton.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16),
-            dismissButton.heightAnchor.constraint(equalToConstant: 50),
+            dismissButton.topAnchor.constraint(equalTo: guide.topAnchor, constant: spacing),
+            dismissButton.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -spacing),
             
-            imageView.topAnchor.constraint(equalTo: dismissButton.bottomAnchor, constant: 8),
-            imageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
-            imageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16),
-            imageView.heightAnchor.constraint(equalToConstant: 400),
+            imageView.heightAnchor.constraint(equalToConstant: view.frame.height / 2),
+            imageView.topAnchor.constraint(equalTo: dismissButton.bottomAnchor, constant: spacing),
+            imageView.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: spacing),
+            imageView.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -spacing),
             
-            userLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
-            userLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
-            userLabel.trailingAnchor.constraint(equalTo: imageView.trailingAnchor),
+            userLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: spacing),
+            userLabel.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: spacing),
+            userLabel.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -spacing),
             
-            dateLabel.topAnchor.constraint(equalTo: userLabel.bottomAnchor, constant: 8),
-            dateLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
-            dateLabel.trailingAnchor.constraint(equalTo: imageView.trailingAnchor),
-            dateLabel.bottomAnchor.constraint(equalTo: locationLabel.topAnchor, constant: -8),
+            dateLabel.topAnchor.constraint(equalTo: userLabel.bottomAnchor, constant: spacing),
+            dateLabel.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: spacing),
+            dateLabel.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -spacing),
             
-            locationLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
-            locationLabel.trailingAnchor.constraint(equalTo: imageView.trailingAnchor),
-            locationLabel.bottomAnchor.constraint(equalTo: countLabel.topAnchor, constant: -8),
+            locationLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: spacing),
+            locationLabel.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: spacing),
+            locationLabel.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -spacing),
             
-            countLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
-            countLabel.trailingAnchor.constraint(equalTo: imageView.trailingAnchor),
+            countLabel.topAnchor.constraint(equalTo: locationLabel.bottomAnchor, constant: spacing),
+            countLabel.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: spacing),
+            countLabel.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -spacing),
             
-            likePhotoButton.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
-            likePhotoButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor),
-            likePhotoButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
+            likePhotoButton.topAnchor.constraint(equalTo: countLabel.bottomAnchor, constant: spacing),
+            likePhotoButton.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: spacing),
+            likePhotoButton.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -spacing),
+            likePhotoButton.bottomAnchor.constraint(lessThanOrEqualTo: guide.bottomAnchor, constant: -spacing)
         ])
         loadImage()
     }
