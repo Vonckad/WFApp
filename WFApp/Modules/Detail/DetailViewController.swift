@@ -9,8 +9,7 @@ import UIKit
 import Kingfisher
 
 protocol DetailViewControllerDelegate {
-    func addPhoto(_ photo: ResultsPhoto)
-    func removePhoto(_ photo: ResultsPhoto)
+    func dismissDetail(_ dataSourse: ServiceDataStore)
 }
 
 class DetailViewController: UIViewController {
@@ -25,12 +24,13 @@ class DetailViewController: UIViewController {
     
     private var likePhotoButton: UIButton!
     private var dismissButton: UIButton!
-    
     var delegate: DetailViewControllerDelegate?
-    var isLiked = false
     
-    init(photo: ResultsPhoto) {
+    var dataStore: ServiceDataStore
+    
+    init(photo: ResultsPhoto, dataStore: ServiceDataStore) {
         self.photo = photo
+        self.dataStore = dataStore
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -42,8 +42,9 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = #colorLiteral(red: 0.5970487542, green: 0.5506352338, blue: 0.9098039269, alpha: 1)
         navigationController?.isNavigationBarHidden = false
+         
         configure()
-        if isLiked {
+        if dataStore.likedPhoto.contains(photo) {
             likePhotoButton.setTitle("Unlike", for: .normal)
             likePhotoButton.backgroundColor = .red
         }
@@ -156,17 +157,16 @@ class DetailViewController: UIViewController {
     }
     
     @objc func likePhoto() {
-        if isLiked {
-            isLiked = false
-            delegate?.removePhoto(photo)
-            likePhotoButton.setTitle("Like", for: .normal)
-            likePhotoButton.backgroundColor = .green
-        } else {
-            isLiked = true
-            delegate?.addPhoto(photo)
+        if !dataStore.likedPhoto.contains(photo) {
             likePhotoButton.setTitle("UnLike", for: .normal)
             likePhotoButton.backgroundColor = .red
+            dataStore.addPhoto(photo)
+        } else {
+            likePhotoButton.setTitle("Like", for: .normal)
+            likePhotoButton.backgroundColor = .green
+            dataStore.removePhoto(photo)
         }
+        delegate?.dismissDetail(dataStore)
     }
     
     @objc func dismissDetailVC() {

@@ -18,6 +18,7 @@ struct ResultsPhoto: Decodable, Hashable {
     var user: User
     var location: LocationPhoto?
     var downloads: Int?
+//    var isLike: Bool? = false
 }
 
 struct UrlsPhoto: Decodable, Hashable {

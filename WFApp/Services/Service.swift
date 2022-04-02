@@ -8,35 +8,58 @@
 import Foundation
 
 protocol ServiceProtocol {
-    func getPhoto(query: String, onResult: @escaping (Result<PhotoModel, Error>) -> Void)
-    func getRandomPhoto(onResult: @escaping (Result<[ResultsPhoto], Error>) -> Void)
+    func request(searchItem: String?, complition: @escaping (Data?, Error?) -> ())
 }
-//https://api.unsplash.com/photos/random?page=1&per_page=20&query=&client_id=c9GFb-BEoMjgSkTXUNExh6l32k4sz8ah3Fl0evr3IvI&count=20
-class Service: ServiceProtocol {
-    let clientId = "c9GFb-BEoMjgSkTXUNExh6l32k4sz8ah3Fl0evr3IvI"
-    func getPhoto(query: String, onResult: @escaping (Result<PhotoModel, Error>) -> Void) {
-        
-        let session = URLSession.shared
-        guard let url = URL(string: "https://api.unsplash.com/search/photos?page=1&per_page=20&query=\(query)&client_id=\(clientId)") else {return}
-        let urlRequest = URLRequest(url: url)
 
-        let dataTask = session.dataTask(with: urlRequest, completionHandler: { data, response, error in
-            guard let data = data else {
-                onResult(.failure(error!))
-                return
-            }
-            do {
-                let response = try JSONDecoder().decode(PhotoModel.self, from: data)
-                onResult(.success(response))
-            } catch(let error) {
-//                print(error)
-                onResult(.failure(error))
-            }
-        })
+class Service: ServiceProtocol {
+    
+    func request(searchItem: String?, complition: @escaping (Data?, Error?) -> ()) {
+        let parameters = self.prepareParam(searchItem, random: searchItem != nil)
+        let url = url(params: parameters, random: searchItem != nil)
+        var urlRequest = URLRequest(url: url)
+        urlRequest.allHTTPHeaderFields = prepareHeaders()
+        urlRequest.httpMethod = "get"
+        let dataTask = createDataTask(from: urlRequest, complition: complition)
         dataTask.resume()
+        print("url = \(url)")
     }
     
-    func getRandomPhoto(onResult: @escaping (Result<[ResultsPhoto], Error>) -> Void) {
+    private func createDataTask(from request: URLRequest, complition: @escaping (Data?, Error?) -> ()) -> URLSessionDataTask {
+        return URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                complition(data, error)
+            }
+        }
+    }
+    
+    private func prepareHeaders() -> [String : String]? {
+        var headers = [String : String]()
+        headers["Authorization"] = "Client-ID c9GFb-BEoMjgSkTXUNExh6l32k4sz8ah3Fl0evr3IvI"
+        return headers
+    }
+    
+    private func prepareParam(_ str: String?, random: Bool) -> [String : String] {
+        var parameters = [String : String]()
+        parameters["query"] = str
+        parameters["page"] = "1"
+        if !random {
+            parameters["count"] = "20"
+        } else {
+            parameters["per_page"] = "20"
+        }
+        return parameters
+    }
+    
+    private func url(params: [String : String], random: Bool) -> URL {
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "api.unsplash.com"
+        components.path = !random ? "/photos/random" : "/search/photos"
+        components.queryItems = params.map { URLQueryItem(name: $0, value: $1)}
+        return components.url!
+    }
+    
+    /*func getRandomPhoto(onResult: @escaping (Result<[ResultsPhoto], Error>) -> Void) {
         let session = URLSession.shared
         guard let url = URL(string: "https://api.unsplash.com/photos/random?page=1&per_page=20&client_id=\(clientId)&count=20") else {return}
         let urlRequest = URLRequest(url: url)
@@ -46,16 +69,14 @@ class Service: ServiceProtocol {
                 onResult(.failure(error!))
                 return
             }
-//            print("random data = \(data.description)")
             do {
                 let response: [ResultsPhoto] = try JSONDecoder().decode([ResultsPhoto].self, from: data)
                 onResult(.success(response))
             } catch(let error) {
-//                print("JSONDecoder error = ", error)
                 onResult(.failure(error))
             }
         })
         dataTask.resume()
     }
-
+*/
 }

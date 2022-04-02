@@ -11,21 +11,26 @@ class ViewController: UIViewController {
     
     private var searchTextField: UISearchBar!
     private var collectionView: ImageCollectionView!
-    var topView: UIView!
 //    var actView: UIActivityIndicatorView!
-    
-//    private var photoModel: PhotoModel = PhotoModel(results: [])
-    var likedVC: LikedViewController! // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     var gradientView: GradientView!
     
-    private var loader: ServiceProtocol = Service()
+    private var serviceFetcher: ServiceFetcherProtocol = ServiceFetcher()
+    var dataStore: ServiceDataStore
+    
+    init(dataStore: ServiceDataStore) {
+        self.dataStore = dataStore
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         gradientView = GradientView(frame: view.bounds)
         self.view.insertSubview(gradientView, at: 0)
-        likedVC = tabBarController?.viewControllers?.last as? LikedViewController
         configureUI()
         loadRandom()
     }
@@ -41,7 +46,7 @@ class ViewController: UIViewController {
 extension ViewController {
     private func configureUI() {
     
-        topView = UIView()
+        let topView = UIView()
         topView.translatesAutoresizingMaskIntoConstraints = false
         topView.backgroundColor = UIColor(white: 0, alpha: 0.1)
         view.addSubview(topView)
@@ -53,7 +58,15 @@ extension ViewController {
         searchTextField.isOpaque = true
         searchTextField.backgroundColor = UIColor(white: 0, alpha: 0.1)
         view.addSubview(searchTextField)
-
+        
+        let button = UIButton()
+        button.setImage(UIImage(named: "random"), for: .normal)
+        button.imageView?.contentMode = .center
+        button.addTarget(self, action: #selector(loadRandom), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor(white: 0, alpha: 0.1)
+        view.addSubview(button)
+        
         collectionView = ImageCollectionView(frame: .zero, collectionViewLayout: ImageCollectionView.createLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.delegate = self
@@ -67,8 +80,12 @@ extension ViewController {
             
             searchTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             searchTextField.leftAnchor.constraint(equalTo: view.leftAnchor),
-            searchTextField.rightAnchor.constraint(equalTo: view.rightAnchor),
-
+            
+            button.leftAnchor.constraint(equalTo: searchTextField.rightAnchor),
+            button.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            button.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+            button.bottomAnchor.constraint(equalTo: searchTextField.bottomAnchor),
+            
             collectionView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 8),
             collectionView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8),
             collectionView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8),
@@ -83,8 +100,8 @@ extension ViewController {
 
 //MARK: - createAlertView
 extension ViewController {
-    private func createAlertView(title: String, massage: String) {
-        let allert = UIAlertController.init(title: title, message: massage, preferredStyle: .alert)
+    private func createAlertView() {
+        let allert = UIAlertController.init(title: "Сбой загрузки!", message: "Проверьте подключение к интернету", preferredStyle: .alert)
         let reloadAction = UIAlertAction(title: "Обновить", style: .default) { _ in
             self.searchTextField.text == "" ? self.loadRandom() : self.loadSearchResult(query:  self.searchTextField.text!)
         }
@@ -96,33 +113,28 @@ extension ViewController {
 
 //MARK: - loadData
 extension ViewController {
+    @objc
     private func loadRandom() {
-        loader.getRandomPhoto() { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let model):
-//                    self.photoModel.results = model
-                    self.collectionView.photoModel.results = model
-                    self.collectionView.myReloadData()
-                case .failure(_):
-                    self.createAlertView(title: "Сбой загрузки!", massage: "Проверьте подключение к интернету")
-                }
+        searchTextField.text = ""
+        searchTextField.resignFirstResponder()
+        serviceFetcher.fetchRandomImages { response in
+            guard let results = response else {
+                self.createAlertView()
+                return
             }
+            self.collectionView.photoModel.results = results
+            self.collectionView.myReloadData()
         }
     }
     
     private func loadSearchResult(query: String) {
-        loader.getPhoto(query: query) { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let model):
-//                    self.photoModel = model
-                    self.collectionView.photoModel = model
-                    self.collectionView.myReloadData()
-                case .failure(_):
-                    self.createAlertView(title: "Сбой загрузки!", massage: "Проверьте подключение к интернету")
-                }
+        serviceFetcher.fetchImages(searchItem: query) { searchItemResults in
+            guard let results = searchItemResults else {
+                self.createAlertView()
+                return
             }
+            self.collectionView.photoModel = results
+            self.collectionView.myReloadData()
         }
     }
 }
@@ -143,13 +155,7 @@ extension ViewController: UICollectionViewDelegate {
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let photo = self.collectionView.photoModel.results[indexPath.row]
-        let detailVC = DetailViewController(photo: photo)
-        for pt in likedVC.likedPhoto {
-            if photo.id == pt.id {
-                detailVC.isLiked = true
-            }
-        }
-        detailVC.delegate = likedVC
+        let detailVC = DetailViewController(photo: photo, dataStore: dataStore)
         present(detailVC, animated: true)
     }
 }

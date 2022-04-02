@@ -10,20 +10,20 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-
-
+    let tabbar = UITabBarController()
+    let dataStore: ServiceDataStore = ServiceFetcher()
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
         
-        let tabbar = UITabBarController()
         tabbar.tabBar.tintColor = .white
         tabbar.tabBar.backgroundColor = UIColor(white: 0, alpha: 0.1)
         
-        let firstVC = ViewController()
+        let firstVC = ViewController(dataStore: dataStore)
         firstVC.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "home"), selectedImage: UIImage(named: "home-2"))
         
-        let secondVC = LikedViewController()
+        let secondVC = LikedViewController(dataStore: dataStore)
         secondVC.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "bookmark"), selectedImage: UIImage(named: "bookmark-2"))
         
         tabbar.viewControllers = [firstVC, secondVC]
