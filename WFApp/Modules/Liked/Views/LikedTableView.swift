@@ -38,7 +38,6 @@ class LikedTableView: UITableView {
 //MARK: - UITableViewDelegate, UITableViewDataSource
 extension LikedTableView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("cell.count = \(likedPhoto.count)")
         return likedPhoto.count
     }
     

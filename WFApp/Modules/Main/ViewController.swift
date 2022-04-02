@@ -11,7 +11,7 @@ class ViewController: UIViewController {
     
     private var searchTextField: UISearchBar!
     private var collectionView: ImageCollectionView!
-//    var actView: UIActivityIndicatorView!
+    var actView: UIActivityIndicatorView!
     var gradientView: GradientView!
     
     private var serviceFetcher: ServiceFetcherProtocol = ServiceFetcher()
@@ -92,9 +92,9 @@ extension ViewController {
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8)
         ])
         
-//        actView = UIActivityIndicatorView(frame: CGRect(x: view.center.x, y: view.center.y, width: 20, height: 20))
-//        actView.startAnimating()
-//        view.addSubview(actView)
+        actView = UIActivityIndicatorView(frame: CGRect(x: view.center.x, y: view.center.y, width: 20, height: 20))
+        actView.startAnimating()
+        view.addSubview(actView)
     }
 }
 
@@ -109,12 +109,18 @@ extension ViewController {
         allert.addAction(reloadAction)
         present(allert, animated: true, completion: nil)
     }
+    
+    private func stratActView(_ isEnable: Bool) {
+        isEnable ? actView.startAnimating() : actView.stopAnimating()
+        actView.isHidden = !isEnable
+    }
 }
 
 //MARK: - loadData
 extension ViewController {
     @objc
     private func loadRandom() {
+        stratActView(true)
         searchTextField.text = ""
         searchTextField.resignFirstResponder()
         serviceFetcher.fetchRandomImages { response in
@@ -122,17 +128,20 @@ extension ViewController {
                 self.createAlertView()
                 return
             }
+            self.stratActView(false)
             self.collectionView.photoModel.results = results
             self.collectionView.myReloadData()
         }
     }
     
     private func loadSearchResult(query: String) {
+        stratActView(true)
         serviceFetcher.fetchImages(searchItem: query) { searchItemResults in
             guard let results = searchItemResults else {
                 self.createAlertView()
                 return
             }
+            self.stratActView(false)
             self.collectionView.photoModel = results
             self.collectionView.myReloadData()
         }
